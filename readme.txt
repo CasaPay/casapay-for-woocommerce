@@ -1,0 +1,100 @@
+=== CasaPay for WooCommerce ===
+Contributors: casapay
+Tags: woocommerce, payment gateway, rent, security deposit, deposit guarantee
+Requires at least: 6.5
+Tested up to: 7.1
+Requires PHP: 7.4
+Stable tag: 0.1.0
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+
+Sell rentals in WooCommerce with CasaPay. Tenants choose at checkout between paying the security deposit or a CasaPay deposit guarantee.
+
+== Description ==
+
+CasaPay for WooCommerce adds CasaPay as a payment method. It is built for the first sale of a rental: the move-in payment, the security deposit and the rental agreement.
+
+**How it works**
+
+1. You mark a product as a CasaPay rental and set its deposit.
+2. At checkout the tenant chooses: pay the deposit now, or use a CasaPay guarantee instead of a deposit. The order total updates straight away, so it always matches what the tenant pays.
+3. The tenant is sent to CasaPay's hosted page for identity verification and payment.
+4. CasaPay notifies your shop with a signed webhook. The plugin confirms the payment with the CasaPay API before it marks the order as paid.
+5. The order gets the CasaPay agreement and its e-mail alias. Invoices sent to that alias become payment links for the tenant.
+
+**Features**
+
+* Deposit choice in the WooCommerce checkout: deposit now, CasaPay guarantee, or both.
+* Agreement types per product: OnTime (guarantee, payout on the due date), Cover (guarantee, payout 30 days after the due date) and Payment link (no guarantee).
+* Works with the classic checkout and the Cart and Checkout blocks.
+* Compatible with High-Performance Order Storage (HPOS).
+* Webhook signature and timestamp checks, with a background check if a webhook is lost.
+* Cancelling an unpaid order also cancels the CasaPay payment session.
+* A public PHP API, action hooks and a REST endpoint so other plugins can read the CasaPay agreement and e-mail alias of an order.
+
+You need a CasaPay account with Gateway API access. CasaPay gives you the API keys and the webhook secret.
+
+== External services ==
+
+This plugin connects to the CasaPay Gateway API, a payment service run by CasaPay. It is needed to take payments and to create rental agreements and deposit guarantees.
+
+* Live API: `https://manage.casapay.com/api/v1/gateway`
+* Sandbox API (test mode): `https://manage.test.casapay.com/api/v1/gateway`
+* CasaPay's hosted payment page, where the tenant is redirected: `https://gateway.casapay.com`
+
+What is sent, and when:
+
+* **On the cart and checkout pages**, when the cart holds a CasaPay rental: the deposit amount, the cart total and the currency, to get the price of the CasaPay guarantee. No personal data is sent. The answer is cached for six hours.
+* **When the customer places an order with CasaPay**: the customer's first and last name, e-mail address, phone number, personal ID code (only if the customer enters it), the order number, the names of the ordered items, the amounts, the currency, the order ID and order key, and the return addresses of your shop.
+* **After the order is placed**: the CasaPay session and agreement IDs, to check the payment status, to read the agreement and its e-mail alias, and to cancel the payment session if the order is cancelled.
+* **On CasaPay's hosted page** the customer gives identity verification and payment details directly to CasaPay. This plugin never sees card or bank details.
+
+CasaPay's terms of service: https://casapay.com/terms
+CasaPay's privacy policy: https://casapay.com/privacy-policy
+
+== Installation ==
+
+1. Install and activate WooCommerce (8.9 or newer).
+2. Install and activate CasaPay for WooCommerce.
+3. Go to **WooCommerce → Settings → Payments → CasaPay**.
+4. Enter your test and live API keys and webhook secrets from CasaPay.
+5. Copy the **Webhook URL** shown on the settings page (`/wp-json/casapay/v1/webhook`) and give it to CasaPay.
+6. On each rental product, open **Product data → General** and set **CasaPay agreement**, **Deposit** and **Deposit options**.
+7. Test a few orders in test mode, then turn test mode off.
+
+Your store currency must be EUR or GBP.
+
+== Frequently Asked Questions ==
+
+= Why does the tenant choose the deposit option in WooCommerce and not on CasaPay's page? =
+
+So the order total is right before the order is created. Paying the deposit now and using a guarantee cost different amounts today. If the choice were made on CasaPay's page, the WooCommerce order, its confirmation e-mail and its invoice would show the wrong total.
+
+= Can a cart hold more than one rental? =
+
+No. One CasaPay payment creates one rental agreement with one deposit, so a cart can hold one rental product, with quantity 1. Other products can be in the same cart.
+
+= Can I take normal payments with CasaPay too? =
+
+Yes. Orders without a rental product use the agreement type set in the plugin settings, with no deposit.
+
+= Does the plugin handle refunds? =
+
+No. The CasaPay Gateway API has no refund endpoint, so refunds are made through CasaPay.
+
+= What about the monthly rent? =
+
+Monthly invoices do not go through WooCommerce. They are sent to the agreement's e-mail alias or created through the CasaPay API.
+
+= How do other plugins get the CasaPay e-mail alias of an order? =
+
+Use `casapay_wc_get_order_email_alias( $order )` or the `casapay_wc_agreement_ready` action. See DEVELOPERS.md in the plugin folder.
+
+= Where are the logs? =
+
+WooCommerce → Status → Logs, source `casapay`.
+
+== Changelog ==
+
+= 0.1.0 =
+* First release.

@@ -1,0 +1,16 @@
+# Files left out of the WordPress.org release (used by 10up/action-wordpress-plugin-deploy).
+/.git
+/.github
+/.wordpress-org
+/vendor
+/node_modules
+.distignore
+.gitignore
+.gitattributes
+composer.json
+composer.lock
+phpcs.xml.dist
+README.md
+DEVELOPERS.md
+SECURITY.md
+CONTRIBUTING.md

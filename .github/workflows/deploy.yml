@@ -1,0 +1,41 @@
+name: Deploy to WordPress.org
+
+# Publishing a GitHub release (tag = version, e.g. 0.1.0) ships that version to the
+# WordPress.org plugin SVN and attaches the installable zip to the release.
+# Needs repository secrets SVN_USERNAME and SVN_PASSWORD (WordPress.org account with commit access).
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check the tag matches the plugin version
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          HEADER=$(grep -m1 -E '^\s*\*\s*Version:' casapay-for-woocommerce.php | awk '{print $NF}')
+          STABLE=$(grep -m1 -E '^Stable tag:' readme.txt | awk '{print $NF}')
+          echo "tag=$TAG header=$HEADER stable=$STABLE"
+          test "$TAG" = "$HEADER" && test "$TAG" = "$STABLE"
+
+      - id: deploy
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        with:
+          generate-zip: true
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: casapay-for-woocommerce
+          VERSION: ${{ github.event.release.tag_name }}
+
+      - name: Attach zip to the GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${{ github.event.release.tag_name }}" "${{ steps.deploy.outputs.zip-path }}" --clobber
