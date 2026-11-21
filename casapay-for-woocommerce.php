@@ -2,7 +2,7 @@
 /**
  * Plugin Name:          CasaPay for WooCommerce
  * Plugin URI:           https://github.com/CasaPay/casapay-for-woocommerce
- * Description:          Sell rentals with CasaPay. At checkout the tenant chooses between paying the security deposit or a CasaPay deposit guarantee, then pays on CasaPay's hosted page.
+ * Description:          Accept rental payments through WooCommerce, with security deposit and CasaPay deposit guarantee options at checkout.
  * Version:              0.1.0
  * Author:               CasaPay
  * Author URI:           https://casapay.com

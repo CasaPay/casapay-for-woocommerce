@@ -8,31 +8,32 @@ Stable tag: 0.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Sell rentals in WooCommerce with CasaPay. Tenants choose at checkout between paying the security deposit or a CasaPay deposit guarantee.
+Accept rental payments through WooCommerce, with security deposit and CasaPay deposit guarantee options at checkout.
 
 == Description ==
 
-CasaPay for WooCommerce adds CasaPay as a payment method. It is built for the first sale of a rental: the move-in payment, the security deposit and the rental agreement.
+Connect your rental website to CasaPay and let tenants make their move-in payment directly from your WooCommerce checkout.
 
-**How it works**
+Set the deposit amount for each rental and offer tenants the choice of paying the security deposit upfront or using a CasaPay deposit guarantee, where available. The checkout total updates to reflect their selection before they place the order.
 
-1. You mark a product as a CasaPay rental and set its deposit.
-2. At checkout the tenant chooses: pay the deposit now, or use a CasaPay guarantee instead of a deposit. The order total updates straight away, so it always matches what the tenant pays.
-3. The tenant is sent to CasaPay's hosted page for identity verification and payment.
-4. CasaPay notifies your shop with a signed webhook. The plugin confirms the payment with the CasaPay API before it marks the order as paid.
-5. The order gets the CasaPay agreement and its e-mail alias. Invoices sent to that alias become payment links for the tenant.
+Tenants then complete identity verification and payment on CasaPay's hosted checkout. Once payment is verified, the plugin automatically marks the WooCommerce order as paid.
 
-**Features**
+= Key features =
 
-* Deposit choice in the WooCommerce checkout: deposit now, CasaPay guarantee, or both.
-* Agreement types per product: OnTime (guarantee, payout on the due date), Cover (guarantee, payout 30 days after the due date) and Payment link (no guarantee).
-* Works with the classic checkout and the Cart and Checkout blocks.
-* Compatible with High-Performance Order Storage (HPOS).
-* Webhook signature and timestamp checks, with a background check if a webhook is lost.
-* Cancelling an unpaid order also cancels the CasaPay payment session.
-* A public PHP API, action hooks and a REST endpoint so other plugins can read the CasaPay agreement and e-mail alias of an order.
+* **Flexible deposit options:** offer an upfront security deposit, a CasaPay deposit guarantee, or let the tenant choose.
+* **Product-level settings:** configure the CasaPay agreement type, deposit amount and available deposit options for each rental.
+* **Hosted payment flow:** identity verification and payment take place on CasaPay's hosted page. Card and bank details do not pass through the plugin.
+* **Automatic payment confirmation:** signed webhooks and an API status check confirm payment before the order is marked as paid.
+* **Follow-up invoicing:** access the CasaPay payment agreement and its dedicated email alias from the order to send future invoices through CasaPay.
+* **WooCommerce compatibility:** supports classic checkout, Cart and Checkout blocks, and High-Performance Order Storage (HPOS).
+* **Test mode:** test your integration before accepting live payments.
+* **For developers:** a PHP API, action hooks and a REST endpoint let other plugins read the CasaPay agreement and email alias of an order.
 
-You need a CasaPay account with Gateway API access. CasaPay gives you the API keys and the webhook secret.
+= Requirements and scope =
+
+A CasaPay account with Gateway API access is required. Supports EUR and GBP stores, WooCommerce 8.9+ and PHP 7.4+.
+
+Each cart can contain one rental product, with a quantity of one. Ongoing monthly rent invoices are handled through CasaPay, not WooCommerce. Refunds are not supported within the plugin.
 
 == External services ==
 
