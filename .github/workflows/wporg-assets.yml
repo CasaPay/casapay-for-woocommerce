@@ -4,6 +4,7 @@ name: Update WordPress.org readme and assets
 # without a new release, e.g. after bumping "Tested up to".
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
@@ -15,9 +16,11 @@ permissions:
 
 jobs:
   assets:
+    # Off until the plugin is approved on WordPress.org: set repository variable WPORG_ENABLED=true.
+    if: vars.WPORG_ENABLED == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: 10up/action-wordpress-plugin-asset-update@stable
         env:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
