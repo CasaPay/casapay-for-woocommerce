@@ -13,9 +13,11 @@ permissions:
 
 jobs:
   deploy:
+    # Off until the plugin is approved on WordPress.org: set repository variable WPORG_ENABLED=true.
+    if: vars.WPORG_ENABLED == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Check the tag matches the plugin version
         run: |
