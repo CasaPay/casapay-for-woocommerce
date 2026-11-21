@@ -1,0 +1,358 @@
+msgid ""
+msgstr "Project-Id-Version: CasaPay for WooCommerce 0.1.0
+Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/casapay-for-woocommerce
+POT-Creation-Date: 2026-11-05 10:35+0000
+PO-Revision-Date: 2026-11-05 10:35+0000
+Language: et
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Domain: casapay-for-woocommerce
+Plural-Forms: nplurals=2; plural=(n != 1);
+"
+
+#: casapay-for-woocommerce.php:83
+msgid "Settings"
+msgstr "Seaded"
+
+#: includes/class-casapay-wc-api.php:70
+msgid "The CasaPay API key is not set."
+msgstr "CasaPay API võti on seadistamata."
+
+#: includes/class-casapay-wc-blocks.php:37 includes/class-casapay-wc-cart.php:92 includes/class-casapay-wc-gateway.php:148 includes/class-casapay-wc-order.php:416
+msgid "Deposit"
+msgstr "Tagatisraha"
+
+#: includes/class-casapay-wc-cart.php:90
+msgid "Pay the deposit now"
+msgstr "Maksan tagatisraha kohe"
+
+#: includes/class-casapay-wc-cart.php:106
+#, php-format
+msgid "Due today %s"
+msgstr "Täna tasuda %s"
+
+#: includes/class-casapay-wc-cart.php:109
+#, php-format
+msgid "then %s per month"
+msgstr "edaspidi %s kuus"
+
+#: includes/class-casapay-wc-cart.php:130
+msgid "CasaPay guarantee instead of a deposit"
+msgstr "CasaPay garantii tagatisraha asemel"
+
+#: includes/class-casapay-wc-cart.php:132
+msgid "CasaPay guarantee, first month"
+msgstr "CasaPay garantii, 1. kuu"
+
+#: includes/class-casapay-wc-cart.php:220
+msgid "Your cart can hold one rental. Remove the current one before adding another."
+msgstr "Ostukorvis saab olla üks üüritoode. Eemalda eelmine enne uue lisamist."
+
+#: includes/class-casapay-wc-cart.php:228
+msgid "Your cart can hold one rental. Remove the extra ones before paying."
+msgstr "Ostukorvis saab olla üks üüritoode. Eemalda üleliigsed enne maksmist."
+
+#: includes/class-casapay-wc-gateway.php:13
+msgid "Sell rentals through CasaPay: identity verification, payment, and either a deposit or a CasaPay guarantee. The customer chooses the deposit option at checkout."
+msgstr "Üüri esmane müük CasaPay kaudu: isikutuvastus, makse ning tagatisraha kohe või CasaPay garantii. Klient valib tagatisraha viisi WooCommerce'i kassas."
+
+#: includes/class-casapay-wc-gateway.php:31
+msgid "Enable/Disable"
+msgstr "Sisse lülitatud"
+
+#: includes/class-casapay-wc-gateway.php:33
+msgid "Enable CasaPay"
+msgstr "Luba CasaPay makseviis"
+
+#: includes/class-casapay-wc-gateway.php:37
+msgid "Title at checkout"
+msgstr "Nimi kassas"
+
+#: includes/class-casapay-wc-gateway.php:42
+msgid "Description at checkout"
+msgstr "Kirjeldus kassas"
+
+#: includes/class-casapay-wc-gateway.php:44
+msgid "Pay securely on CasaPay's page. Instead of a deposit you can choose a CasaPay guarantee."
+msgstr "Maksad turvaliselt CasaPay lehel. Tagatisraha asemel saad valida CasaPay garantii."
+
+#: includes/class-casapay-wc-gateway.php:47
+msgid "Webhook URL"
+msgstr "Webhooki URL"
+
+#: includes/class-casapay-wc-gateway.php:50
+#, php-format
+msgid "Give this address to CasaPay: %s"
+msgstr "Anna see aadress CasaPayle: %s"
+
+#: includes/class-casapay-wc-gateway.php:53
+msgid "Test mode"
+msgstr "Testrežiim"
+
+#: includes/class-casapay-wc-gateway.php:55
+msgid "Use the sandbox (sk_test_ key)"
+msgstr "Kasuta liivakasti (sk_test_ võti)"
+
+#: includes/class-casapay-wc-gateway.php:59
+msgid "Test API key"
+msgstr "Test API võti"
+
+#: includes/class-casapay-wc-gateway.php:63
+msgid "Test webhook secret"
+msgstr "Test webhooki saladus"
+
+#: includes/class-casapay-wc-gateway.php:67
+msgid "Live API key"
+msgstr "Live API võti"
+
+#: includes/class-casapay-wc-gateway.php:71
+msgid "Live webhook secret"
+msgstr "Live webhooki saladus"
+
+#: includes/class-casapay-wc-gateway.php:75
+msgid "Agreement type for other products"
+msgstr "Lepingu tüüp tavatoodetele"
+
+#: includes/class-casapay-wc-gateway.php:77
+msgid "Used for orders without a CasaPay rental product. Rental products use the type set on the product."
+msgstr "Kehtib tellimustele, kus pole CasaPay üüritoodet. Üüritoote tüüp tuleb toote seadetest."
+
+#: includes/class-casapay-wc-gateway.php:86
+msgid "Identity verification"
+msgstr "Isikutuvastus"
+
+#: includes/class-casapay-wc-gateway.php:90
+msgid "CasaPay account default"
+msgstr "CasaPay konto vaikeväärtus"
+
+#: includes/class-casapay-wc-gateway.php:91
+msgid "Always"
+msgstr "Alati"
+
+#: includes/class-casapay-wc-gateway.php:92
+msgid "Never"
+msgstr "Mitte kunagi"
+
+#: includes/class-casapay-wc-gateway.php:96
+msgid "Allowed payment methods"
+msgstr "Lubatud makseviisid"
+
+#: includes/class-casapay-wc-gateway.php:99
+msgid "Leave empty to use the CasaPay account default."
+msgstr "Tühi tähendab CasaPay konto vaikeväärtust."
+
+#: includes/class-casapay-wc-gateway.php:102
+msgid "Card"
+msgstr "Kaart"
+
+#: includes/class-casapay-wc-gateway.php:103
+msgid "Bank transfer"
+msgstr "Pangaülekanne"
+
+#: includes/class-casapay-wc-gateway.php:104
+msgid "Open banking"
+msgstr "Pangalink (open banking)"
+
+#: includes/class-casapay-wc-gateway.php:108
+msgid "Test API URL"
+msgstr "Test API aadress"
+
+#: includes/class-casapay-wc-gateway.php:111
+msgid "Leave empty unless CasaPay gave you a different address."
+msgstr "Jäta tühjaks, kui CasaPay pole teist aadressi andnud."
+
+#: includes/class-casapay-wc-gateway.php:114
+msgid "Live API URL"
+msgstr "Live API aadress"
+
+#: includes/class-casapay-wc-gateway.php:165
+msgid "We could not get the CasaPay guarantee price right now. Please try again in a few minutes."
+msgstr "CasaPay garantii hinda ei õnnestunud praegu saada. Proovi mõne minuti pärast uuesti."
+
+#: includes/class-casapay-wc-gateway.php:189
+msgid "We could not start the CasaPay payment. Please try again or contact us."
+msgstr "CasaPay makset ei õnnestunud alustada. Proovi uuesti või võta meiega ühendust."
+
+#: includes/class-casapay-wc-gateway.php:220
+msgid "The payment was not completed. You can place the order again."
+msgstr "Makse jäi tegemata. Võid tellimuse uuesti esitada."
+
+#: includes/class-casapay-wc-gateway.php:227
+msgid "Waiting for CasaPay to confirm your payment. This page refreshes on its own."
+msgstr "Ootame CasaPaylt makse kinnitust. Leht uueneb ise."
+
+#: includes/class-casapay-wc-order.php:96
+#, php-format
+msgid "Order %1$s: %2$s"
+msgstr "Tellimus %1$s: %2$s"
+
+#: includes/class-casapay-wc-order.php:117
+msgid "Choose whether to pay the deposit now or use a CasaPay guarantee."
+msgstr "Vali, kas maksad tagatisraha kohe või kasutad CasaPay garantiid."
+
+#: includes/class-casapay-wc-order.php:125
+msgid "The order total is zero, so no CasaPay payment is needed."
+msgstr "Tellimuse summa on null, CasaPay makset pole vaja."
+
+#: includes/class-casapay-wc-order.php:189
+#, php-format
+msgid "CasaPay session %1$s created (%2$s%3$s). Customer sent to the CasaPay payment page."
+msgstr "CasaPay sessioon %1$s loodud (%2$s%3$s). Klient suunati CasaPay lehele."
+
+#: includes/class-casapay-wc-order.php:234
+#, php-format
+msgid "CasaPay session %s expired."
+msgstr "CasaPay sessioon %s aegus."
+
+#: includes/class-casapay-wc-order.php:236
+#, php-format
+msgid "CasaPay session %s was cancelled."
+msgstr "CasaPay sessioon %s tühistati."
+
+#: includes/class-casapay-wc-order.php:238
+#, php-format
+msgid "CasaPay session %s failed."
+msgstr "CasaPay sessioon %s ebaõnnestus."
+
+#: includes/class-casapay-wc-order.php:268
+#, php-format
+msgid "Check this order: %1$s was chosen at checkout, CasaPay reported %2$s."
+msgstr "Tähelepanu: kassas valiti %1$s, CasaPay andis %2$s."
+
+#: includes/class-casapay-wc-order.php:280
+#, php-format
+msgid "CasaPay payment confirmed through the API (session %s)."
+msgstr "CasaPay makse kinnitatud API-st (sessioon %s)."
+
+#: includes/class-casapay-wc-order.php:288
+#, php-format
+msgid "CasaPay payment of %1$s does not match the order total of %2$s. Check before fulfilling."
+msgstr "CasaPay makse %1$s ei klapi tellimuse summaga %2$s. Kontrolli enne täitmist."
+
+#: includes/class-casapay-wc-order.php:357
+#, php-format
+msgid "CasaPay agreement %1$s, invoice e-mail alias: %2$s"
+msgstr "CasaPay leping %1$s, arvete e-posti alias: %2$s"
+
+#: includes/class-casapay-wc-order.php:389
+msgid "The CasaPay session was cancelled, but its invoice was already partly paid. Refund it through CasaPay."
+msgstr "CasaPay sessioon tühistati, kuid arve oli juba osaliselt makstud. Tee tagasimakse CasaPay kaudu."
+
+#: includes/class-casapay-wc-order.php:414
+msgid "Session"
+msgstr "Sessioon"
+
+#: includes/class-casapay-wc-order.php:415
+msgid "Agreement type"
+msgstr "Lepingu tüüp"
+
+#: includes/class-casapay-wc-order.php:417
+msgid "Agreement"
+msgstr "Leping"
+
+#: includes/class-casapay-wc-order.php:418
+msgid "Guarantee"
+msgstr "Garantii"
+
+#: includes/class-casapay-wc-order.php:419
+msgid "E-mail alias"
+msgstr "E-posti alias"
+
+#: includes/class-casapay-wc-order.php:435 includes/class-casapay-wc-order.php:450
+msgid "Personal ID code"
+msgstr "Isikukood"
+
+#: includes/class-casapay-wc-order.php:451
+msgid "Personal ID code (optional)"
+msgstr "Isikukood (valikuline)"
+
+#: includes/class-casapay-wc-privacy.php:30
+msgid "CasaPay for WooCommerce sends customer data to CasaPay when a customer pays with CasaPay. Review the text below and add it to your privacy policy."
+msgstr "CasaPay for WooCommerce saadab kliendi andmed CasaPayle, kui klient maksab CasaPayga. Vaata allolev tekst üle ja lisa see oma privaatsuspoliitikasse."
+
+#: includes/class-casapay-wc-privacy.php:31
+msgid "Suggested text:"
+msgstr "Soovitatav tekst:"
+
+#: includes/class-casapay-wc-privacy.php:32
+msgid "When you pay with CasaPay, we send your name, e-mail address, phone number, personal identification code (if you enter it), order number, ordered items and amounts to CasaPay. CasaPay uses this data to verify your identity, take the payment and, if you choose it, provide a deposit guarantee. On CasaPay's payment page you give your identity and payment details directly to CasaPay. CasaPay's privacy policy explains how they process this data."
+msgstr "Kui maksad CasaPayga, saadame CasaPayle sinu nime, e-posti aadressi, telefoninumbri, isikukoodi (kui selle sisestad), tellimuse numbri, tellitud tooted ja summad. CasaPay kasutab neid andmeid sinu isiku tuvastamiseks, makse vastuvõtmiseks ja, kui selle valid, tagatisraha garantii pakkumiseks. CasaPay makselehel annad isiku- ja makseandmed otse CasaPayle. Kuidas CasaPay neid andmeid töötleb, on kirjas CasaPay privaatsuspoliitikas."
+
+#: includes/class-casapay-wc-product.php:28
+msgid "CasaPay agreement"
+msgstr "CasaPay leping"
+
+#: includes/class-casapay-wc-product.php:30
+msgid "The rental becomes a CasaPay agreement. A cart can hold one rental at a time."
+msgstr "Üüritoode luuakse CasaPay lepinguna. Ostukorvis saab olla üks üüritoode korraga."
+
+#: includes/class-casapay-wc-product.php:32
+msgid "— Not a rental —"
+msgstr "— Pole üüritoode —"
+
+#: includes/class-casapay-wc-product.php:33
+msgid "OnTime: guarantee, payout on due date"
+msgstr "OnTime: garantii, väljamakse tähtpäeval"
+
+#: includes/class-casapay-wc-product.php:34
+msgid "Cover: guarantee, payout 30 days after due date"
+msgstr "Cover: garantii, väljamakse tähtpäev + 30 p"
+
+#: includes/class-casapay-wc-product.php:35
+msgid "Payment link: no guarantee"
+msgstr "Payment link: garantiita"
+
+#: includes/class-casapay-wc-product.php:44
+#, php-format
+msgid "Deposit (%s)"
+msgstr "Tagatisraha (%s)"
+
+#: includes/class-casapay-wc-product.php:47
+msgid "OnTime and Cover only. Up to 15,000. Leave empty for no deposit."
+msgstr "Ainult OnTime ja Cover. Kuni 15 000. Tühi tähendab, et tagatisraha pole."
+
+#: includes/class-casapay-wc-product.php:54
+msgid "Deposit options"
+msgstr "Tagatisraha viis"
+
+#: includes/class-casapay-wc-product.php:56
+msgid "What the customer can choose at checkout."
+msgstr "Mida klient kassas valida saab."
+
+#: includes/class-casapay-wc-product.php:58
+msgid "Customer chooses: deposit now or CasaPay guarantee"
+msgstr "Klient valib: kohe või CasaPay garantii"
+
+#: includes/class-casapay-wc-product.php:59
+msgid "Deposit paid now only"
+msgstr "Ainult tagatisraha kohe"
+
+#: includes/class-casapay-wc-product.php:60
+msgid "CasaPay guarantee only"
+msgstr "Ainult CasaPay garantii"
+
+#: includes/class-casapay-wc-product.php:86
+msgid "The CasaPay deposit can be at most 15,000. The amount was lowered."
+msgstr "CasaPay tagatisraha on kuni 15 000. Summa on vähendatud."
+
+#: includes/class-casapay-wc-rest.php:95
+#, php-format
+msgid "CasaPay payment did not go through (%1$s, attempt %2$d). The customer can try again on the same link."
+msgstr "CasaPay makse ei läinud läbi (%1$s, katse %2$d). Klient saab samal lingil uuesti proovida."
+
+#: includes/class-casapay-wc-rest.php:103
+msgid "CasaPay: identity verification is waiting for manual review."
+msgstr "CasaPay: isikutuvastus ootab käsitsi ülevaatust."
+
+#: includes/class-casapay-wc-rest.php:107
+msgid "CasaPay: identity verification approved."
+msgstr "CasaPay: isikutuvastus kinnitatud."
+
+#: includes/class-casapay-wc-rest.php:111
+msgid "CasaPay: identity verification failed."
+msgstr "CasaPay: isikutuvastus ebaõnnestus."
+
+#: includes/class-casapay-wc-rest.php:119
+msgid "CasaPay guarantee activated."
+msgstr "CasaPay garantii aktiveeritud."
