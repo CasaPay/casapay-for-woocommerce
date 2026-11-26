@@ -1,5 +1,5 @@
 === CasaPay for WooCommerce ===
-Contributors: casapay
+Contributors: casapay, illimar
 Tags: woocommerce, payment gateway, rent, security deposit, deposit guarantee
 Requires at least: 6.5
 Tested up to: 7.1
@@ -50,8 +50,8 @@ What is sent, and when:
 * **After the order is placed**: the CasaPay session and agreement IDs, to check the payment status, to read the agreement and its e-mail alias, and to cancel the payment session if the order is cancelled.
 * **On CasaPay's hosted page** the customer gives identity verification and payment details directly to CasaPay. This plugin never sees card or bank details.
 
-CasaPay's terms of service: https://casapay.com/terms
-CasaPay's privacy policy: https://casapay.com/privacy-policy
+CasaPay's terms of service: https://casapay.com/operator/terms (operators) and https://casapay.com/tenant/terms (tenants)
+CasaPay's privacy policy: https://casapay.com/privacy
 
 == Installation ==
 
