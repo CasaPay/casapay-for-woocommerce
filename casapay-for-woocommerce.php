@@ -35,14 +35,6 @@ add_action(
 	}
 );
 
-add_action(
-	'init',
-	function () {
-		// Bundled translations; language packs from translate.wordpress.org take precedence when installed.
-		load_plugin_textdomain( 'casapay-for-woocommerce', false, dirname( plugin_basename( CASAPAY_WC_FILE ) ) . '/languages' ); // phpcs:ignore PluginCheck.CodeAnalysis.DiscouragedFunctions.load_plugin_textdomainFound
-	}
-);
-
 add_action( 'plugins_loaded', 'casapay_wc_init', 11 );
 
 /**
