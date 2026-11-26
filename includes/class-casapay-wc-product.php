@@ -17,6 +17,8 @@ class Casapay_WC_Product {
 		add_action( 'woocommerce_product_options_general_product_data', array( __CLASS__, 'render_fields' ) );
 		add_action( 'woocommerce_admin_process_product_object', array( __CLASS__, 'save_fields' ) );
 		add_filter( 'woocommerce_is_sold_individually', array( __CLASS__, 'sold_individually' ), 10, 2 );
+		add_action( 'woocommerce_variation_options_pricing', array( __CLASS__, 'render_variation_field' ), 10, 3 );
+		add_action( 'woocommerce_admin_process_variation_object', array( __CLASS__, 'save_variation_field' ), 10, 2 );
 	}
 
 	public static function render_fields() {
@@ -91,17 +93,52 @@ class Casapay_WC_Product {
 		$product->update_meta_data( self::META_OPTIONS, $options );
 	}
 
+	/** Deposit per variation, e.g. one listing with a 500 and a 1000 room. Empty = the product's deposit. */
+	public static function render_variation_field( $loop, $variation_data, $variation ) {
+		$product = wc_get_product( $variation );
+		woocommerce_wp_text_input(
+			array(
+				'id'            => self::META_COVER . '_' . $loop,
+				'name'          => self::META_COVER . '[' . $loop . ']',
+				'value'         => $product ? (string) $product->get_meta( self::META_COVER ) : '',
+				/* translators: %s: currency symbol. */
+				'label'         => sprintf( __( 'CasaPay deposit (%s)', 'casapay-for-woocommerce' ), get_woocommerce_currency_symbol() ),
+				'data_type'     => 'price',
+				'desc_tip'      => true,
+				'description'   => __( 'Leave empty to use the deposit set on the product. 0 means no deposit for this variation.', 'casapay-for-woocommerce' ),
+				'wrapper_class' => 'form-row form-row-full',
+			)
+		);
+	}
+
+	public static function save_variation_field( $variation, $loop ) {
+		// phpcs:disable WordPress.Security.NonceVerification.Missing -- WooCommerce verifies the save-variations nonce.
+		if ( ! isset( $_POST[ self::META_COVER ] ) || ! is_array( $_POST[ self::META_COVER ] ) ) {
+			return;
+		}
+		$raw = isset( $_POST[ self::META_COVER ][ $loop ] ) ? sanitize_text_field( wp_unslash( $_POST[ self::META_COVER ][ $loop ] ) ) : '';
+		// phpcs:enable
+		$cover = '' === $raw ? '' : wc_format_decimal( $raw );
+		if ( '' !== $cover && (float) $cover > self::MAX_COVER ) {
+			$cover = (string) self::MAX_COVER;
+		}
+		$variation->update_meta_data( self::META_COVER, $cover ); // WooCommerce saves the variation after this hook.
+	}
+
 	/**
 	 * Rental configuration of a product, or null when it is not a CasaPay rental.
+	 * A variation uses its own deposit when set, otherwise the parent's.
 	 *
-	 * @return array{type:string,cover:float,modes:string[]}|null
+	 * @return array{type:string,cover:float,options:string,modes:string[]}|null
 	 */
 	public static function get_config( $product ) {
 		if ( ! $product instanceof WC_Product ) {
 			return null;
 		}
+		$variation_cover = '';
 		if ( $product->is_type( 'variation' ) ) {
-			$product = wc_get_product( $product->get_parent_id() );
+			$variation_cover = (string) $product->get_meta( self::META_COVER );
+			$product         = wc_get_product( $product->get_parent_id() );
 			if ( ! $product ) {
 				return null;
 			}
@@ -112,19 +149,33 @@ class Casapay_WC_Product {
 			return null;
 		}
 
-		$cover = in_array( $type, array( 'ontime', 'cover' ), true ) ? (float) $product->get_meta( self::META_COVER ) : 0.0;
+		$cover = '' !== $variation_cover ? $variation_cover : $product->get_meta( self::META_COVER );
+		return self::make_config( $type, (float) $cover, (string) $product->get_meta( self::META_OPTIONS ) );
+	}
+
+	/**
+	 * Normalised rental configuration. The modes follow from the cover: no cover, nothing to choose.
+	 *
+	 * @param string $type    Agreement type.
+	 * @param float  $cover   Cover (deposit) amount.
+	 * @param string $options Deposit options setting: both | deposit_upfront | deposit_guaranteed.
+	 * @return array{type:string,cover:float,options:string,modes:string[]}
+	 */
+	public static function make_config( $type, $cover, $options ) {
+		$type    = (string) $type;
+		$options = in_array( $options, array( 'deposit_upfront', 'deposit_guaranteed' ), true ) ? $options : 'both';
+		$cover   = in_array( $type, array( 'ontime', 'cover' ), true ) ? min( max( 0.0, round( (float) $cover, 2 ) ), (float) self::MAX_COVER ) : 0.0;
+
 		$modes = array();
 		if ( $cover > 0 ) {
-			$option = (string) $product->get_meta( self::META_OPTIONS );
-			$modes  = 'deposit_upfront' === $option || 'deposit_guaranteed' === $option
-				? array( $option )
-				: array( 'deposit_upfront', 'deposit_guaranteed' );
+			$modes = 'both' === $options ? array( 'deposit_upfront', 'deposit_guaranteed' ) : array( $options );
 		}
 
 		return array(
-			'type'  => $type,
-			'cover' => min( $cover, self::MAX_COVER ),
-			'modes' => $modes,
+			'type'    => $type,
+			'cover'   => $cover,
+			'options' => $options,
+			'modes'   => $modes,
 		);
 	}
 
