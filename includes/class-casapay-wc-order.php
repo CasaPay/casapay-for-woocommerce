@@ -49,8 +49,16 @@ class Casapay_WC_Order {
 	 * Session payload
 	 * --------------------------------------------------------------- */
 
+	/**
+	 * Rental config of the order: the one frozen on the line at checkout, or, for orders created
+	 * another way (admin, older plugin versions), the product's current config.
+	 */
 	public static function rental_config( WC_Order $order ) {
 		foreach ( $order->get_items() as $item ) {
+			$saved = $item->get_meta( Casapay_WC_Cart::LINE_ITEM_META );
+			if ( is_array( $saved ) && ! empty( $saved['type'] ) ) {
+				return Casapay_WC_Product::make_config( $saved['type'], (float) ( $saved['cover'] ?? 0 ), (string) ( $saved['options'] ?? '' ) );
+			}
 			$config = Casapay_WC_Product::get_config( $item->get_product() );
 			if ( $config ) {
 				return $config;
@@ -313,6 +321,18 @@ class Casapay_WC_Order {
 			$order->add_order_note( sprintf( __( 'Check this order: %1$s was chosen at checkout, CasaPay reported %2$s.', 'casapay-for-woocommerce' ), $expected_mode, $resolved ) );
 		}
 
+		$expected_cover = (string) $order->get_meta( self::META_COVER );
+		if ( '' !== $expected_cover && isset( $session['cover']['amount'] ) && abs( (float) $session['cover']['amount'] - (float) $expected_cover ) >= 0.01 ) {
+			$order->add_order_note(
+				sprintf(
+					/* translators: 1: cover amount sent at checkout, 2: cover amount reported by CasaPay. */
+					__( 'Check this order: a cover amount of %1$s was sent to CasaPay, CasaPay reported %2$s.', 'casapay-for-woocommerce' ),
+					casapay_wc_money( (float) $expected_cover, $order->get_currency() ),
+					casapay_wc_money( (float) $session['cover']['amount'], $order->get_currency() )
+				)
+			);
+		}
+
 		if ( $order->needs_payment() ) {
 			$cash  = isset( $session['total_cash_amount'] ) ? (float) $session['total_cash_amount'] : (float) ( $session['amount'] ?? 0 );
 			$total = round( (float) $order->get_total(), 2 );
@@ -459,6 +479,7 @@ class Casapay_WC_Order {
 			__( 'Session', 'casapay-for-woocommerce' )   => $order->get_meta( self::META_SESSION ),
 			__( 'Agreement type', 'casapay-for-woocommerce' ) => $order->get_meta( self::META_TYPE ),
 			__( 'Deposit', 'casapay-for-woocommerce' )   => $order->get_meta( self::META_RESOLVED ) ? $order->get_meta( self::META_RESOLVED ) : $order->get_meta( self::META_MODE ),
+			__( 'Cover amount', 'casapay-for-woocommerce' ) => '' !== (string) $order->get_meta( self::META_COVER ) ? casapay_wc_money( (float) $order->get_meta( self::META_COVER ), $order->get_currency() ) : '',
 			__( 'Agreement', 'casapay-for-woocommerce' ) => $order->get_meta( self::META_AGREEMENT_REF ) ? $order->get_meta( self::META_AGREEMENT_REF ) : $order->get_meta( self::META_AGREEMENT_ID ),
 			__( 'Guarantee', 'casapay-for-woocommerce' ) => $order->get_meta( self::META_GUARANTEE_ID ),
 			__( 'E-mail alias', 'casapay-for-woocommerce' ) => $order->get_meta( self::META_ALIAS ),

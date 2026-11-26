@@ -21,7 +21,7 @@ Tenants then complete identity verification and payment on CasaPay's hosted chec
 = Key features =
 
 * **Flexible deposit options:** offer an upfront security deposit, a CasaPay deposit guarantee, or let the tenant choose.
-* **Product-level settings:** configure the CasaPay agreement type, deposit amount and available deposit options for each rental.
+* **Product-level settings:** configure the CasaPay agreement type, deposit amount and available deposit options for each rental. Variations can have their own deposit amount, and booking plugins can set the amount for each booking.
 * **Hosted payment flow:** identity verification and payment take place on CasaPay's hosted page. Card and bank details do not pass through the plugin.
 * **Automatic payment confirmation:** signed webhooks and an API status check confirm payment before the order is marked as paid.
 * **Follow-up invoicing:** access the CasaPay payment agreement and its dedicated email alias from the order to send future invoices through CasaPay.

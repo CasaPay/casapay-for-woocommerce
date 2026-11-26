@@ -93,6 +93,29 @@ add_filter( 'casapay_wc_session_payload', function ( array $payload, WC_Order $o
 
 Do not change `metadata.order_id` or `metadata.order_key`. The plugin uses them to match webhooks to orders.
 
+### Cover amount per checkout
+
+The cover (deposit) amount does not have to be one value for the whole shop. It is decided for each cart line, in this order:
+
+1. Cart item data `casapay_cover_amount`, set by your code when the booking is added to the cart.
+2. The variation's **CasaPay deposit**, if set (e.g. a 500 room and a 1000 room on one listing).
+3. The product's **Deposit**.
+4. Then the `casapay_wc_cover_amount` filter can change the result.
+
+```php
+// A booking plugin adds the booking with its own cover amount.
+WC()->cart->add_to_cart( $product_id, 1, 0, array(), array(
+    'casapay_cover_amount' => 1000,
+) );
+
+// Or decide it with a filter.
+add_filter( 'casapay_wc_cover_amount', function ( float $cover, WC_Product $product, array $cart_item ) {
+    return my_booking_deposit( $cart_item ) ?? $cover;
+}, 10, 3 );
+```
+
+Never take the amount straight from the request, or a customer could lower their own deposit. The amount is capped at 15,000 and only applies to `ontime` and `cover` rentals. The customer still chooses "deposit now" or "CasaPay guarantee" at checkout. When the order is created, the amount is saved on the order line. The CasaPay session uses that saved amount with the fixed `deposit_mode`, so the customer does not choose again on CasaPay's page. If CasaPay reports a different cover amount or deposit option, the plugin adds an order note.
+
 ### Other filters
 
 | Filter | Default | What it does |
@@ -143,6 +166,7 @@ Prefer the functions above. The keys are listed for debugging and reporting. Do 
 | `_casapay_email_alias` | E-mail alias |
 | `_casapay_agreement_type` | `payment_link` / `ontime` / `cover` |
 | `_casapay_deposit_mode` | Deposit option chosen at checkout |
+| `_casapay_cover_amount` | Cover amount sent to CasaPay |
 | `_casapay_resolved_mode` | Deposit option confirmed by CasaPay |
 | `_casapay_guarantee_id` | Guarantee ID (`GRN-…`) |
 

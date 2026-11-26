@@ -7,6 +7,10 @@
  *   deposit_upfront    -> "Deposit"                         = cover_amount
  *   deposit_guaranteed -> "CasaPay guarantee, first month"  = due_today - first payment (from pricing-preview)
  * The session is then created with that fixed deposit_mode, never "choice".
+ *
+ * The cover amount is decided per cart line (product, variation, cart item data or the
+ * casapay_wc_cover_amount filter) and frozen on the order line, so the session always uses
+ * the amount the customer saw at checkout.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -17,6 +21,10 @@ class Casapay_WC_Cart {
 	const FIELD         = 'casapay_deposit_mode';
 	const FEE_PREFIX    = 'casapay_';
 	const FEE_ITEM_META = '_casapay_fee';
+	/** Cart item data key a booking plugin can set to give one booking its own cover amount. */
+	const ITEM_COVER = 'casapay_cover_amount';
+	/** Order line item meta holding the rental config used at checkout. */
+	const LINE_ITEM_META = '_casapay_rental';
 
 	public static function init() {
 		add_action( 'woocommerce_cart_calculate_fees', array( __CLASS__, 'add_fees' ), 20 );
@@ -26,6 +34,7 @@ class Casapay_WC_Cart {
 		add_action( 'woocommerce_checkout_update_order_review', array( __CLASS__, 'from_order_review' ) );
 		add_action( 'woocommerce_checkout_process', array( __CLASS__, 'from_checkout_post' ) );
 		add_action( 'woocommerce_checkout_create_order_fee_item', array( __CLASS__, 'tag_fee_item' ), 10, 4 );
+		add_action( 'woocommerce_checkout_create_order_line_item', array( __CLASS__, 'tag_line_item' ), 10, 4 );
 		// The plugin boots on plugins_loaded:11, after WooCommerce has usually fired woocommerce_blocks_loaded.
 		if ( did_action( 'woocommerce_blocks_loaded' ) ) {
 			self::register_store_api();
@@ -41,7 +50,7 @@ class Casapay_WC_Cart {
 			return null;
 		}
 		foreach ( $cart->get_cart() as $item ) {
-			$config = Casapay_WC_Product::get_config( $item['data'] ?? null );
+			$config = self::item_config( $item );
 			if ( $config ) {
 				return array(
 					'product' => $item['data'],
@@ -50,6 +59,33 @@ class Casapay_WC_Cart {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Rental config of one cart line, with the cover amount that applies to this checkout:
+	 * cart item data `casapay_cover_amount` (set by code, never from the request), else the
+	 * variation's or product's deposit, then the `casapay_wc_cover_amount` filter.
+	 *
+	 * @param array $item Cart item (needs 'data').
+	 * @return array|null
+	 */
+	public static function item_config( array $item ) {
+		$product = $item['data'] ?? null;
+		$config  = Casapay_WC_Product::get_config( $product );
+		if ( ! $config ) {
+			return null;
+		}
+		$cover = isset( $item[ self::ITEM_COVER ] ) && is_numeric( $item[ self::ITEM_COVER ] ) ? (float) $item[ self::ITEM_COVER ] : $config['cover'];
+		$cover = (float) apply_filters( 'casapay_wc_cover_amount', $cover, $product, $item );
+		return Casapay_WC_Product::make_config( $config['type'], $cover, $config['options'] );
+	}
+
+	/** Freezes the rental config (incl. cover amount) on the order line; build_session reads it from there. */
+	public static function tag_line_item( $item, $cart_item_key, $values, $order ) {
+		$config = self::item_config( (array) $values );
+		if ( $config ) {
+			$item->add_meta_data( self::LINE_ITEM_META, $config, true );
+		}
 	}
 
 	private static function count_rentals( $cart ) {
